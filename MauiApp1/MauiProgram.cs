@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using MauiApp1.Services;
+using Microsoft.Extensions.Logging;
 
 namespace MauiApp1
 {
@@ -14,6 +15,10 @@ namespace MauiApp1
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
+            // Configuracion y acceso a datos (SQLite)
+            builder.Services.AddSingleton<AppConfigurationService>();
+            builder.Services.AddSingleton<DatabaseService>();
 
 #if DEBUG
     		builder.Logging.AddDebug();
