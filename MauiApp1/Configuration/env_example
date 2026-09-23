@@ -1,0 +1,12 @@
+# Copiar este archivo como ".env" en esta misma carpeta (MauiApp1/Configuration/.env) y completar los valores.
+# El archivo .env NO se versiona (esta en .gitignore) y se embebe en la app al compilar.
+# Las variables de entorno reales del sistema tienen prioridad sobre este archivo.
+
+# Obligatoria: clave de la API de Anthropic (https://platform.claude.com/settings/keys)
+ANTHROPIC_API_KEY=
+
+# Opcionales (si se omiten se usan los valores de appsettings.json)
+CLAUDE_MODEL=claude-opus-5
+# CLAUDE_FALLBACK_MODEL=claude-opus-4-8
+# CLAUDE_MAX_TOKENS=16000
+# CLAUDE_TIMEOUT_SECONDS=120

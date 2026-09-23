@@ -117,10 +117,41 @@ namespace MauiApp1.ViewModels
         }
 
         [RelayCommand]
-        private void LimpiarFiltro()
+        private async Task LimpiarHistorialAsync()
         {
-            Aplicar(_todas);
-            Filtrando = false;
+            if (_todas.Count == 0)
+            {
+                await Shell.Current.DisplayAlertAsync(
+                    "Historial vacio",
+                    "No hay consultas guardadas para eliminar.",
+                    "OK");
+                return;
+            }
+
+            var confirmar = await Shell.Current.DisplayAlertAsync(
+                "Eliminar todo el historial",
+                $"Se eliminaran las {_todas.Count} consultas guardadas, junto con su detalle y respuesta. " +
+                "Esta accion no se puede deshacer. ¿Deseas continuar?",
+                "Eliminar todo",
+                "Cancelar");
+
+            if (!confirmar)
+                return;
+
+            try
+            {
+                await _databaseService.InitializeAsync();
+                await _databaseService.DeleteAllAsync();
+                Filtrando = false;
+                await CargarAsync();
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlertAsync(
+                    "Error",
+                    $"No se pudo eliminar el historial: {ex.Message}",
+                    "OK");
+            }
         }
 
         [RelayCommand]

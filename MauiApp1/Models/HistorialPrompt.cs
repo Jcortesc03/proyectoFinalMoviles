@@ -17,7 +17,7 @@ namespace MauiApp1.Models
         /// <summary>Fecha y hora en que se realizo la consulta.</summary>
         public DateTime FechaConsulta { get; set; } = DateTime.Now;
 
-        /// <summary>Modelo de IA utilizado para responder (ej. configurado en <c>AiApi.DefaultModel</c>).</summary>
+        /// <summary>Modelo de IA utilizado para responder (ej. configurado en <c>Claude.Model</c> / <c>CLAUDE_MODEL</c>).</summary>
         public string? ModeloIA { get; set; }
 
         /// <summary>

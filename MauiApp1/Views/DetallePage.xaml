@@ -9,7 +9,8 @@
         <Button Text="Volver al historial"
                 Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.VolverCommand}"
                 IsVisible="{Binding TieneDatos}"
-                BackgroundColor="{AppThemeBinding Light=#757575, Dark=#616161}" />
+                BackgroundColor="{AppThemeBinding Light=#1565C0, Dark=#0D47A1}"
+                TextColor="White" />
 
         <ScrollView Grid.Row="1">
 

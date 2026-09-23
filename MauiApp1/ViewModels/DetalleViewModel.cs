@@ -72,6 +72,20 @@ namespace MauiApp1.ViewModels
             if (id <= 0)
                 return;
 
+            try
+            {
+                await CargarDesdeBaseDeDatosAsync(id);
+            }
+            catch (Exception ex)
+            {
+                // La pagina llama a este metodo sin await: sin este catch el error se perderia.
+                Error = $"No se pudo cargar el detalle de la consulta: {ex.Message}";
+                TieneDatos = true;
+            }
+        }
+
+        private async Task CargarDesdeBaseDeDatosAsync(int id)
+        {
             await _databaseService.InitializeAsync();
 
             var historial = await _databaseService.GetHistorialAsync(id);

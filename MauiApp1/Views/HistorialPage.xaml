@@ -36,8 +36,9 @@
                             Command="{Binding FiltrarCommand}" />
                     <Button Grid.Column="1"
                             Text="Limpiar"
-                            Command="{Binding LimpiarFiltroCommand}"
-                            BackgroundColor="{AppThemeBinding Light=#757575, Dark=#616161}" />
+                            Command="{Binding LimpiarHistorialCommand}"
+                            BackgroundColor="#C62828"
+                            TextColor="White" />
                 </Grid>
             </VerticalStackLayout>
         </Border>
@@ -45,7 +46,8 @@
         <Button Grid.Row="2"
                 Text="Descargar historial (PDF)"
                 Command="{Binding DescargarHistorialPdfCommand}"
-                BackgroundColor="{AppThemeBinding Light=#757575, Dark=#616161}"
+                BackgroundColor="{AppThemeBinding Light=#F9A825, Dark=#F57F17}"
+                TextColor="#212121"
                 IsVisible="{Binding TieneConsultas}" />
 
         <Grid Grid.Row="3">
@@ -104,7 +106,8 @@
                                         <Button Text="PDF"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.DescargarPdfCommand}"
                                                 CommandParameter="{Binding .}"
-                                                BackgroundColor="{AppThemeBinding Light=#757575, Dark=#616161}" />
+                                                BackgroundColor="{AppThemeBinding Light=#F9A825, Dark=#F57F17}"
+                                                TextColor="#212121" />
                                         <Button Text="Eliminar"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.EliminarCommand}"
                                                 CommandParameter="{Binding .}"

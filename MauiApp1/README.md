@@ -5,27 +5,34 @@ pregunta del usuario, la envía a una **API de IA externa** y devuelve la respue
 **texto plano**. Cada consulta, su detalle técnico y la respuesta quedan persistidos en
 una base de datos **SQLite** local.
 
+La IA utilizada es **Claude** (Anthropic), a través del SDK oficial `Anthropic`; la clave se
+configura mediante la variable de entorno `ANTHROPIC_API_KEY` (ver [Configuración](#configuración)).
+
 ---
 
 ## Estructura del proyecto
 
 ```
 MauiApp1/
-├── Configuration/
-│   ├── appsettings.json        # Configuración embebida (BD + API IA)
-│   └── AppSettings.cs          # Clases fuertemente tipadas para la configuración
-├── Models/
+├── Configuration/                   # Ver Configuration/README.md
+│   ├── appsettings.json        # Configuración embebida (BD + Claude, sin secretos)
+│   ├── AppSettings.cs          # Clases fuertemente tipadas para la configuración
+│   ├── EnvironmentVariables.cs # Lectura de ANTHROPIC_API_KEY y CLAUDE_*
+│   ├── env_example             # Plantilla de variables de entorno (versionada)
+│   └── .env                    # Variables locales con la clave (NO versionado)
+├── Models/                          # Ver Models/README.md
 │   ├── HistorialPrompt.cs      # Tabla Historial_Prompts
 │   ├── DetallePrompt.cs        # Tabla Detalle_Prompts
 │   ├── RespuestaIA.cs          # Tabla Respuestas_IA
-│   └── ConsultaDto.cs          # DTO para listar/exportar consultas
-├── Services/
-│   ├── AppConfigurationService.cs   # Carga appsettings.json desde el recurso embebido
+│   ├── ConsultaDto.cs          # DTO para listar/exportar consultas
+│   └── ClaudeResultado.cs      # Resultado procesado de una consulta a Claude
+├── Services/                        # Ver Services/README.md
+│   ├── AppConfigurationService.cs   # Carga appsettings.json + variables de entorno
 │   ├── DatabaseService.cs           # Conexión SQLite, esquema y operaciones CRUD
-│   ├── AiApiService.cs              # Cliente HTTP hacia la API de IA externa
+│   ├── ClaudeApiService.cs          # Cliente de la API de Claude (SDK Anthropic)
 │   ├── PdfExportService.cs          # Generación de PDFs (QuestPDF)
 │   └── ServiceHelper.cs             # Localizador estático de servicios (DI)
-├── ViewModels/
+├── ViewModels/                      # Ver ViewModels/README.md
 │   ├── InicioViewModel.cs           # Ventana Inicio
 │   ├── ConsultarIaViewModel.cs      # Ventana Consultar IA
 │   ├── HistorialViewModel.cs        # Ventana Consultar historial
@@ -68,6 +75,7 @@ Paquetes agregados al `.csproj`:
 | `CommunityToolkit.Maui` | 15.0.1 | `FileSaver` (guardar PDFs) y funcionalidades del toolkit |
 | `CommunityToolkit.Mvvm` | 8.4.2 | MVVM (`ObservableObject`, `[ObservableProperty]`, `[RelayCommand]`) |
 | `QuestPDF` | 2026.9.0 | Generación de documentos PDF |
+| `Anthropic` | 12.50.0 | SDK oficial de la API de Claude |
 
 Para instalar/restaurar las dependencias:
 
@@ -89,10 +97,27 @@ dotnet build -f net10.0-android               # Android
 
 ## Configuración
 
-El archivo `Configuration/appsettings.json` está embebido como recurso en el ensamblado
-(ver `EmbeddedResource` en el `.csproj`) y se carga en `AppConfigurationService`.
+La configuración se arma en `AppConfigurationService` combinando, de menor a mayor prioridad:
 
-Dos secciones principales:
+1. `Configuration/appsettings.json` (embebido como recurso, ver `EmbeddedResource` en el `.csproj`).
+2. `Configuration/.env` (embebido solo si existe; no se versiona).
+3. Variables de entorno del proceso.
+
+Detalle completo en [`Configuration/README.md`](Configuration/README.md).
+
+### Puesta en marcha rápida (Claude)
+
+```bash
+cp Configuration/env_example Configuration/.env
+# editar Configuration/.env -> ANTHROPIC_API_KEY=sk-ant-...   (https://platform.claude.com/settings/keys)
+dotnet build -f net10.0-windows10.0.19041.0
+```
+
+En Windows también se puede usar una variable de entorno real:
+
+```powershell
+$env:ANTHROPIC_API_KEY = "sk-ant-..."
+```
 
 ### `Database`
 
@@ -102,23 +127,22 @@ Dos secciones principales:
 | `DeleteOnStartup` | `false` | Si es `true`, borra la BD al iniciar (recomendado solo en desarrollo). |
 | `EnforceForeignKeys` | `true` | Activa `PRAGMA foreign_keys = ON` para respetar las relaciones. |
 
-### `AiApi`
+### `Claude`
 
-Configuración de la API de IA externa (aún no consumida por código, lista para el
-servicio de IA):
-
-| Clave | Valor por defecto | Descripción |
-| ----- | ----------------- | ----------- |
-| `BaseUrl` | `https://tu-api-ia.ejemplo.com/v1` | URL base de la API. **Cambiar por la real.** |
-| `ApiKey` | *(vacío)* | Clave de autenticación. **No versionar**; usar `SecureStorage` o variables de entorno en producción. |
-| `DefaultModel` | `modelo-por-defecto` | Modelo a usar en las consultas. |
-| `TimeoutSeconds` | `60` | Timeout de las llamadas HTTP. |
+| Clave | Variable de entorno | Valor por defecto | Descripción |
+| ----- | ------------------- | ----------------- | ----------- |
+| `ApiKey` | `ANTHROPIC_API_KEY` | *(vacío)* | Clave de la API. **Obligatoria. No versionar.** |
+| `Model` | `CLAUDE_MODEL` | `claude-opus-5` | Modelo usado en las consultas. |
+| `FallbackModel` | `CLAUDE_FALLBACK_MODEL` | `claude-opus-4-8` | Responde si el modelo principal rechaza la consulta. |
+| `MaxTokens` | `CLAUDE_MAX_TOKENS` | `16000` | Máximo de tokens de la respuesta. |
+| `TimeoutSeconds` | `CLAUDE_TIMEOUT_SECONDS` | `120` | Timeout de las llamadas HTTP. |
+| `SystemInstruction` | — | *(texto plano, en español)* | Instrucción de sistema enviada en cada consulta. |
 
 Acceso desde el código:
 
 ```csharp
 var config = ServiceHelper.GetService<AppConfigurationService>();
-var baseUrl = config.Settings.AiApi.BaseUrl;
+var modelo = config.Settings.Claude.Model;
 ```
 
 ---
@@ -217,7 +241,7 @@ public class MiPageViewModel
 var historial = new HistorialPrompt
 {
     Consulta = "¿Qué es SQLite?",
-    ModeloIA  = config.Settings.AiApi.DefaultModel,
+    ModeloIA  = config.Settings.Claude.Model,
     Estado    = "Procesado",
 };
 await _db.InsertHistorialAsync(historial);
@@ -249,8 +273,8 @@ var respuestas        = await _db.GetRespuestasByHistorialAsync(historial.Id);
 
 ## Próximos pasos sugeridos
 
-1. Configurar `AiApi.BaseUrl` y `AiApi.ApiKey` en `Configuration/appsettings.json`
-   con la API real. `AiApiService.AskAsync` asume el contrato
-   `{ "model": ..., "prompt": ... }`; adaptarlo a la API si fuera necesario.
-2. Ampliar filtros del historial (por texto, por estado, etc.).
-3. Agregar pruebas unitarias para los ViewModels y el `PdfExportService`.
+1. Crear `Configuration/.env` con `ANTHROPIC_API_KEY` (ver `Configuration/README.md`).
+2. Para producción, mover la clave de Claude a un backend propio (el `.env` queda embebido
+   en el binario).
+3. Ampliar filtros del historial (por texto, por estado, etc.).
+4. Agregar pruebas unitarias para los ViewModels, `ClaudeApiService` y `PdfExportService`.

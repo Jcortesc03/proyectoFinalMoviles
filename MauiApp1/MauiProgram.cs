@@ -24,7 +24,7 @@ namespace MauiApp1
             builder.Services.AddSingleton<DatabaseService>();
 
             // Servicios de aplicacion
-            builder.Services.AddSingleton<AiApiService>();
+            builder.Services.AddSingleton<ClaudeApiService>();
             builder.Services.AddSingleton<PdfExportService>();
 
             // ViewModels

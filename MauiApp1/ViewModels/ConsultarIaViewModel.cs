@@ -14,7 +14,7 @@ namespace MauiApp1.ViewModels
     /// </summary>
     public partial class ConsultarIaViewModel : ObservableObject
     {
-        private readonly AiApiService _aiApiService;
+        private readonly ClaudeApiService _claudeApiService;
         private readonly DatabaseService _databaseService;
         private readonly AppConfigurationService _configuration;
 
@@ -58,11 +58,11 @@ namespace MauiApp1.ViewModels
         public string ContadorCaracteres => $"{Prompt.Length} / {MaxLongitudPrompt}";
 
         public ConsultarIaViewModel(
-            AiApiService aiApiService,
+            ClaudeApiService claudeApiService,
             DatabaseService databaseService,
             AppConfigurationService configuration)
         {
-            _aiApiService = aiApiService;
+            _claudeApiService = claudeApiService;
             _databaseService = databaseService;
             _configuration = configuration;
         }
@@ -87,7 +87,7 @@ namespace MauiApp1.ViewModels
             var historial = new HistorialPrompt
             {
                 Consulta = texto,
-                ModeloIA = _configuration.Settings.AiApi.DefaultModel,
+                ModeloIA = _claudeApiService.Modelo,
                 Estado = "Procesado",
                 FechaConsulta = DateTime.Now,
             };
@@ -97,13 +97,16 @@ namespace MauiApp1.ViewModels
             try
             {
                 var stopwatch = Stopwatch.StartNew();
-                var textoRespuesta = await _aiApiService.AskAsync(texto);
+                var resultado = await _claudeApiService.AskAsync(texto);
                 stopwatch.Stop();
 
-                Respuesta = textoRespuesta;
+                Respuesta = resultado.Texto;
                 historial.Estado = "Procesado";
+                historial.ModeloIA = resultado.Modelo;
+                historial.TokenConsumidos = resultado.TokensConsumidos;
                 historial.DuracionMs = stopwatch.ElapsedMilliseconds;
-                respuesta = new RespuestaIA { RespuestaTexto = textoRespuesta };
+                detalle.Parametros = resultado.Parametros;
+                respuesta = new RespuestaIA { RespuestaTexto = resultado.Texto };
             }
             catch (Exception ex)
             {

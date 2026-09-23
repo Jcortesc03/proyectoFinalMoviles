@@ -174,5 +174,22 @@ namespace MauiApp1.Services
 
         public Task DeleteRespuestaAsync(RespuestaIA respuesta) =>
             Connection.DeleteAsync(respuesta);
+
+        // -----------------------------------------------------------------
+        //  Todas las tablas
+        // -----------------------------------------------------------------
+
+        /// <summary>
+        /// Elimina todos los registros de <c>Respuestas_IA</c>, <c>Detalle_Prompts</c> e
+        /// <c>Historial_Prompts</c> en una sola transaccion (primero las tablas hijas
+        /// para respetar las claves foraneas).
+        /// </summary>
+        public Task DeleteAllAsync() =>
+            Connection.RunInTransactionAsync(conn =>
+            {
+                conn.DeleteAll<RespuestaIA>();
+                conn.DeleteAll<DetallePrompt>();
+                conn.DeleteAll<HistorialPrompt>();
+            });
     }
 }

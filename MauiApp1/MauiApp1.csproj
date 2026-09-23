@@ -80,6 +80,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<!-- SDK oficial de Anthropic (API de Claude) -->
+		<PackageReference Include="Anthropic" Version="12.50.0" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<!-- Comunidad: FileSaver (guardar PDFs) y MVVM -->
 		<PackageReference Include="CommunityToolkit.Maui" Version="15.0.1" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
@@ -90,6 +95,8 @@
 
 	<ItemGroup>
 		<EmbeddedResource Include="Configuration\appsettings.json" />
+		<!-- Variables de entorno locales (no versionado). Ver Configuration/README.md -->
+		<EmbeddedResource Include="Configuration\.env" Condition="Exists('Configuration\.env')" LogicalName="MauiApp1.Configuration.env" />
 	</ItemGroup>
 
 </Project>

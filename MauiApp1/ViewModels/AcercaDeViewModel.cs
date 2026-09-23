@@ -23,7 +23,7 @@ namespace MauiApp1.ViewModels
 
         /// <summary>Tecnologias utilizadas.</summary>
         public string Tecnologias =>
-            ".NET MAUI 10, C#, SQLite (sqlite-net-pcl), CommunityToolkit.Maui y QuestPDF.";
+            ".NET MAUI 10, C#, API de Claude (SDK Anthropic), SQLite (sqlite-net-pcl), CommunityToolkit.Maui y QuestPDF.";
 
         /// <summary>Integrantes del equipo.</summary>
         public IReadOnlyList<string> Integrantes { get; } =

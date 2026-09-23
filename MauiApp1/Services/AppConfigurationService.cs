@@ -6,19 +6,18 @@ namespace MauiApp1.Services
 {
     /// <summary>
     /// Carga y expone la configuracion de la aplicacion desde el recurso embebido
-    /// <c>Configuration/appsettings.json</c>.
+    /// <c>Configuration/appsettings.json</c>, sobreescrita por las variables de entorno
+    /// definidas en <see cref="EnvironmentVariables"/>.
     /// </summary>
     /// <remarks>
-    /// Se registra como singleton en <see cref="MauiProgram"/>. Los valores son de solo lectura
-    /// en tiempo de ejecucion; para secretos como <see cref="AiApiSettings.ApiKey"/>,
-    /// se recomienda usar <c>SecureStorage</c> o variables de entorno y sobreescribir las
-    /// propiedades tras la construccion.
+    /// Se registra como singleton en <see cref="MauiProgram"/>. Orden de prioridad (de menor a mayor):
+    /// <c>appsettings.json</c> &lt; <c>Configuration/.env</c> &lt; variables de entorno del proceso.
     /// </remarks>
     public sealed class AppConfigurationService
     {
         private const string EmbeddedResourceName = "MauiApp1.Configuration.appsettings.json";
 
-        /// <summary>Configuracion completa, deserializada desde appsettings.json.</summary>
+        /// <summary>Configuracion completa, deserializada desde appsettings.json y variables de entorno.</summary>
         public AppSettings Settings { get; }
 
         public AppConfigurationService()
@@ -31,6 +30,7 @@ namespace MauiApp1.Services
 
             var configuration = new ConfigurationBuilder()
                 .AddJsonStream(stream)
+                .AddInMemoryCollection(EnvironmentVariables.Load())
                 .Build();
 
             Settings = configuration.Get<AppSettings>()
