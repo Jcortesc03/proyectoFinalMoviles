@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Views.ConsultarIaPage"
+             Title="Consultar IA">
+
+    <VerticalStackLayout Padding="24" Spacing="14">
+
+        <Label Text="Consulta a la IA"
+               FontSize="22"
+               FontAttributes="Bold" />
+
+        <Border Stroke="{AppThemeBinding Light=#D0D0D0, Dark=#3D3D3D}"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="4,0,4,0">
+            <Editor Text="{Binding Prompt}"
+                    Placeholder="Escribe tu consulta aqui... (maximo 500 caracteres)"
+                    MaxLength="{Binding MaxLongitudPrompt}"
+                    AutoSize="TextChanges"
+                    IsEnabled="{Binding PuedeConsultar}"
+                    FontSize="14" />
+        </Border>
+
+        <Label Text="{Binding ContadorCaracteres}"
+               FontSize="12"
+               HorizontalOptions="End"
+               TextColor="{AppThemeBinding Light=#777777, Dark=#AAAAAA}" />
+
+        <Button Text="Consultar"
+                Command="{Binding ConsultarCommand}"
+                IsEnabled="{Binding PuedeConsultar}" />
+
+        <ActivityIndicator IsRunning="{Binding EstaConsultando}"
+                           IsVisible="{Binding EstaConsultando}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+
+        <Label Text="{Binding MensajeError}"
+               IsVisible="{Binding TieneError}"
+               TextColor="#C62828"
+               FontSize="14"
+               LineBreakMode="WordWrap" />
+
+        <Label Text="La respuesta de la IA aparecera aqui."
+               IsVisible="{Binding MuestraAvisoSinRespuesta}"
+               FontSize="14"
+               TextColor="{AppThemeBinding Light=#999999, Dark=#777777}"
+               HorizontalTextAlignment="Center" />
+
+        <Border IsVisible="{Binding TieneRespuesta}"
+                Stroke="{AppThemeBinding Light=#D0D0D0, Dark=#3D3D3D}"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="12"
+                BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#222222}">
+
+            <ScrollView>
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Respuesta de la IA"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Label Text="{Binding Respuesta}"
+                           FontSize="14"
+                           LineBreakMode="WordWrap"
+                           HorizontalOptions="Fill" />
+                </VerticalStackLayout>
+            </ScrollView>
+        </Border>
+
+    </VerticalStackLayout>
+
+</ContentPage>

@@ -66,7 +66,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.90" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.0" />
 	</ItemGroup>
 
@@ -77,6 +77,15 @@
 		<!-- Configuración (appsettings.json) -->
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.12" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.12" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- Comunidad: FileSaver (guardar PDFs) y MVVM -->
+		<PackageReference Include="CommunityToolkit.Maui" Version="15.0.1" />
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+
+		<!-- Generacion de documentos PDF -->
+		<PackageReference Include="QuestPDF" Version="2026.9.0" />
 	</ItemGroup>
 
 	<ItemGroup>

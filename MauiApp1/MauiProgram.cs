@@ -1,4 +1,6 @@
-﻿using MauiApp1.Services;
+﻿using CommunityToolkit.Maui;
+using MauiApp1.Services;
+using MauiApp1.ViewModels;
 using Microsoft.Extensions.Logging;
 
 namespace MauiApp1
@@ -10,6 +12,7 @@ namespace MauiApp1
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -20,11 +23,25 @@ namespace MauiApp1
             builder.Services.AddSingleton<AppConfigurationService>();
             builder.Services.AddSingleton<DatabaseService>();
 
+            // Servicios de aplicacion
+            builder.Services.AddSingleton<AiApiService>();
+            builder.Services.AddSingleton<PdfExportService>();
+
+            // ViewModels
+            builder.Services.AddSingleton<InicioViewModel>();
+            builder.Services.AddSingleton<ConsultarIaViewModel>();
+            builder.Services.AddSingleton<HistorialViewModel>();
+            builder.Services.AddSingleton<DetalleViewModel>();
+            builder.Services.AddSingleton<AcercaDeViewModel>();
+
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
 
-            return builder.Build();
+            var app = builder.Build();
+            ServiceHelper.Initialize(app.Services);
+
+            return app;
         }
     }
 }

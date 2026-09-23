@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Views.DetallePage"
+             Title="Detalle de consulta">
+
+    <Grid RowDefinitions="Auto,*" Padding="24" RowSpacing="14">
+
+        <Button Text="Volver al historial"
+                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.VolverCommand}"
+                IsVisible="{Binding TieneDatos}"
+                BackgroundColor="{AppThemeBinding Light=#757575, Dark=#616161}" />
+
+        <ScrollView Grid.Row="1">
+
+            <VerticalStackLayout Spacing="16">
+
+                <VerticalStackLayout Spacing="10"
+                                     IsVisible="{Binding TieneDatos}">
+
+                    <!-- Fecha y estado -->
+                    <HorizontalStackLayout Spacing="16">
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Fecha" FontSize="12" FontAttributes="Bold" />
+                            <Label Text="{Binding Fecha}" FontSize="14" />
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Estado" FontSize="12" FontAttributes="Bold" />
+                            <Label Text="{Binding Estado}" FontSize="14"
+                                   FontAttributes="Bold">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding Estado}"
+                                                 Value="Respondido con exito">
+                                        <Setter Property="TextColor" Value="#2E7D32" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label"
+                                                 Binding="{Binding Estado}"
+                                                 Value="Sin respuesta">
+                                        <Setter Property="TextColor" Value="#C62828" />
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </VerticalStackLayout>
+                    </HorizontalStackLayout>
+
+                    <!-- Consulta -->
+                    <Label Text="Consulta"
+                           FontSize="13"
+                           FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=#555555, Dark=#BBBBBB}" />
+                    <Border Stroke="{AppThemeBinding Light=#D0D0D0, Dark=#3D3D3D}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 8"
+                            Padding="12"
+                            BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#222222}">
+                        <Label Text="{Binding Consulta}"
+                               FontSize="14"
+                               LineBreakMode="WordWrap" />
+                    </Border>
+
+                    <!-- Prompt enviado -->
+                    <Label Text="Prompt enviado a la IA"
+                           FontSize="13"
+                           FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=#555555, Dark=#BBBBBB}" />
+                    <Border Stroke="{AppThemeBinding Light=#D0D0D0, Dark=#3D3D3D}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 8"
+                            Padding="12"
+                            BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#222222}">
+                        <Label Text="{Binding PromptEnviado, TargetNullValue=(No disponible)}"
+                               FontSize="14"
+                               LineBreakMode="WordWrap" />
+                    </Border>
+
+                    <!-- Respuesta -->
+                    <Label Text="Respuesta de la IA"
+                           FontSize="13"
+                           FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light=#555555, Dark=#BBBBBB}" />
+                    <Border Stroke="{AppThemeBinding Light=#D0D0D0, Dark=#3D3D3D}"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 8"
+                            Padding="12"
+                            BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#222222}">
+                        <Label Text="{Binding Respuesta, TargetNullValue=(Sin respuesta)}"
+                               FontSize="14"
+                               LineBreakMode="WordWrap" />
+                    </Border>
+
+                    <!-- Error (si existio) -->
+                    <Label Text="{Binding Error}"
+                           IsVisible="{Binding TieneError}"
+                           TextColor="#C62828"
+                           FontSize="14"
+                           LineBreakMode="WordWrap" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="12"
+                                     IsVisible="{Binding NoTieneDatos}"
+                                     VerticalOptions="Center">
+                    <Label Text="No hay una consulta seleccionada."
+                           HorizontalTextAlignment="Center"
+                           FontSize="16"
+                           FontAttributes="Bold" />
+                    <Label Text="Accede a una consulta desde el historial para ver su detalle."
+                           HorizontalTextAlignment="Center"
+                           FontSize="13"
+                           TextColor="{AppThemeBinding Light=#777777, Dark=#AAAAAA}" />
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </Grid>
+
+</ContentPage>

@@ -17,15 +17,41 @@ MauiApp1/
 ├── Models/
 │   ├── HistorialPrompt.cs      # Tabla Historial_Prompts
 │   ├── DetallePrompt.cs        # Tabla Detalle_Prompts
-│   └── RespuestaIA.cs          # Tabla Respuestas_IA
+│   ├── RespuestaIA.cs          # Tabla Respuestas_IA
+│   └── ConsultaDto.cs          # DTO para listar/exportar consultas
 ├── Services/
 │   ├── AppConfigurationService.cs   # Carga appsettings.json desde el recurso embebido
-│   └── DatabaseService.cs           # Conexión SQLite, esquema y operaciones CRUD
-├── ViewModels/                 # (vacío por ahora) ViewModels MVVM
-├── Views/                      # (vacío por ahora) Páginas MVVM
+│   ├── DatabaseService.cs           # Conexión SQLite, esquema y operaciones CRUD
+│   ├── AiApiService.cs              # Cliente HTTP hacia la API de IA externa
+│   ├── PdfExportService.cs          # Generación de PDFs (QuestPDF)
+│   └── ServiceHelper.cs             # Localizador estático de servicios (DI)
+├── ViewModels/
+│   ├── InicioViewModel.cs           # Ventana Inicio
+│   ├── ConsultarIaViewModel.cs      # Ventana Consultar IA
+│   ├── HistorialViewModel.cs        # Ventana Consultar historial
+│   ├── DetalleViewModel.cs          # Ventana Detalle
+│   └── AcercaDeViewModel.cs         # Ventana Acerca de
+├── Views/                           # Páginas (Inicio/ConsultarIa/Historial/Detalle/AcercaDe)
 ├── MauiProgram.cs              # Registro de servicios de DI
 └── MauiApp1.csproj             # Dependencias de NuGet
 ```
+
+---
+
+## Ventanas de la aplicación
+
+La aplicación tiene 5 ventanas organizadas con `Shell` (4 pestañas + detalle):
+
+| Ventana | Página / ViewModel | Descripción |
+| ------- | ------------------ | ----------- |
+| **Inicio** | `Views/InicioPage` | Propósito del proyecto, creadores y acceso rápido al resto de ventanas. |
+| **Consultar IA** | `Views/ConsultarIaPage` | Barra de búsqueda extendible (límite 500 caracteres) y cuadro con la respuesta en texto plano de la IA. |
+| **Consultar historial** | `Views/HistorialPage` | Lista las consultas guardadas, filtra por fecha, descarga en PDF o elimina de la base de datos. |
+| **Detalle** | `Views/DetallePage` | Muestra el prompt enviado, la respuesta, la fecha y el estado ("Respondido con éxito" / "Sin respuesta"). Se abre con la ruta `DetallePage?id=X`. |
+| **Acerca de** | `Views/AcercaDePage` | Detalles del proyecto y tecnologías usadas. |
+
+> La ruta `DetallePage?id=X` se registra en `AppShell` (`Routing.RegisterRoute`). Una consulta,
+> su detalle técnico y su respuesta se guardan juntos en SQLite al hacer una consulta a la IA.
 
 ---
 
@@ -38,6 +64,10 @@ Paquetes agregados al `.csproj`:
 | `sqlite-net-pcl` | 1.11.285 | ORM liviano para SQLite en MAUI |
 | `Microsoft.Extensions.Configuration.Json` | 10.0.12 | Lectura de `appsettings.json` |
 | `Microsoft.Extensions.Configuration.Binder` | 10.0.12 | Mapeo de configuración a clases tipadas |
+| `Microsoft.Maui.Controls` | 10.0.90 | Requerido por CommunityToolkit.Maui |
+| `CommunityToolkit.Maui` | 15.0.1 | `FileSaver` (guardar PDFs) y funcionalidades del toolkit |
+| `CommunityToolkit.Mvvm` | 8.4.2 | MVVM (`ObservableObject`, `[ObservableProperty]`, `[RelayCommand]`) |
+| `QuestPDF` | 2026.9.0 | Generación de documentos PDF |
 
 Para instalar/restaurar las dependencias:
 
@@ -219,8 +249,8 @@ var respuestas        = await _db.GetRespuestasByHistorialAsync(historial.Id);
 
 ## Próximos pasos sugeridos
 
-1. Crear un servicio `AiApiService` (cliente HTTP) que consuma `AiApiSettings`
-   y devuelva el texto plano de la IA.
-2. Orquestar en un ViewModel: insertar `HistorialPrompt` → `DetallePrompt` →
-   llamar a la API → insertar `RespuestaIA`.
-3. Crear las páginas en `Views/` para buscar y mostrar el historial.
+1. Configurar `AiApi.BaseUrl` y `AiApi.ApiKey` en `Configuration/appsettings.json`
+   con la API real. `AiApiService.AskAsync` asume el contrato
+   `{ "model": ..., "prompt": ... }`; adaptarlo a la API si fuera necesario.
+2. Ampliar filtros del historial (por texto, por estado, etc.).
+3. Agregar pruebas unitarias para los ViewModels y el `PdfExportService`.

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp1.Views.HistorialPage"
+             Title="Consultar historial">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*" Padding="24" RowSpacing="12">
+
+        <Label Text="Consultas guardadas"
+               FontSize="22"
+               FontAttributes="Bold" />
+
+        <Border Grid.Row="1"
+                Stroke="{AppThemeBinding Light=#D0D0D0, Dark=#3D3D3D}"
+                StrokeThickness="1"
+                StrokeShape="RoundRectangle 8"
+                Padding="12">
+
+            <VerticalStackLayout Spacing="10">
+                <Label Text="Filtrar por fecha" FontAttributes="Bold" FontSize="14" />
+
+                <HorizontalStackLayout Spacing="10">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Desde" FontSize="12" />
+                        <DatePicker Date="{Binding FechaDesde}" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Hasta" FontSize="12" />
+                        <DatePicker Date="{Binding FechaHasta}" />
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <Button Grid.Column="0"
+                            Text="Filtrar"
+                            Command="{Binding FiltrarCommand}" />
+                    <Button Grid.Column="1"
+                            Text="Limpiar"
+                            Command="{Binding LimpiarFiltroCommand}"
+                            BackgroundColor="{AppThemeBinding Light=#757575, Dark=#616161}" />
+                </Grid>
+            </VerticalStackLayout>
+        </Border>
+
+        <Button Grid.Row="2"
+                Text="Descargar historial (PDF)"
+                Command="{Binding DescargarHistorialPdfCommand}"
+                BackgroundColor="{AppThemeBinding Light=#757575, Dark=#616161}"
+                IsVisible="{Binding TieneConsultas}" />
+
+        <Grid Grid.Row="3">
+
+            <RefreshView IsRefreshing="{Binding EstaCargando, Mode=TwoWay}"
+                         Command="{Binding CargarConsultaCommand}">
+
+                <CollectionView ItemsSource="{Binding Consultas}"
+                                SelectionMode="None">
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout Spacing="10" Padding="20" VerticalOptions="Center">
+                            <Label Text="No hay consultas para mostrar."
+                                   HorizontalTextAlignment="Center"
+                                   FontSize="15" />
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="0,6"
+                                    Stroke="{AppThemeBinding Light=#D0D0D0, Dark=#3D3D3D}"
+                                    StrokeThickness="1"
+                                    StrokeShape="RoundRectangle 8"
+                                    Padding="14,12"
+                                    BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#222222}">
+                                <VerticalStackLayout Spacing="8">
+                                    <Label Text="{Binding Consulta}"
+                                           FontAttributes="Bold"
+                                           FontSize="15"
+                                           LineBreakMode="TailTruncation"
+                                           MaxLines="2" />
+                                    <Label Text="{Binding Fecha, StringFormat='{0:dd/MM/yyyy HH:mm}'}"
+                                           FontSize="12"
+                                           TextColor="{AppThemeBinding Light=#777777, Dark=#AAAAAA}" />
+                                    <Label FontSize="13">
+                                        <Label.Text>
+                                            <Binding Path="Estado" />
+                                        </Label.Text>
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Estado}"
+                                                         Value="Respondido con exito">
+                                                <Setter Property="TextColor" Value="#2E7D32" />
+                                            </DataTrigger>
+                                            <DataTrigger TargetType="Label"
+                                                         Binding="{Binding Estado}"
+                                                         Value="Sin respuesta">
+                                                <Setter Property="TextColor" Value="#C62828" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+
+                                    <HorizontalStackLayout Spacing="8">
+                                        <Button Text="Ver detalle"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.VerDetalleCommand}"
+                                                CommandParameter="{Binding .}" />
+                                        <Button Text="PDF"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.DescargarPdfCommand}"
+                                                CommandParameter="{Binding .}"
+                                                BackgroundColor="{AppThemeBinding Light=#757575, Dark=#616161}" />
+                                        <Button Text="Eliminar"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type CollectionView}}, Path=BindingContext.EliminarCommand}"
+                                                CommandParameter="{Binding .}"
+                                                BackgroundColor="#C62828" />
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
+
+            <ActivityIndicator IsRunning="{Binding EstaCargando}"
+                               IsVisible="{Binding EstaCargando}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+        </Grid>
+
+    </Grid>
+
+</ContentPage>
