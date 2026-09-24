@@ -4,28 +4,27 @@
              x:Class="MauiApp1.Views.ConsultarIaPage"
              Title="Consultar IA">
 
-    <VerticalStackLayout Padding="24" Spacing="14">
+    <VerticalStackLayout Padding="24,28,24,24" Spacing="16">
 
-        <Label Text="Consulta a la IA"
-               FontSize="22"
-               FontAttributes="Bold" />
+        <Grid>
+            <Label Text="Consulta a la IA" Style="{StaticResource HeadlineGhost}" FontSize="32" />
+            <Label Text="Consulta a la IA" Style="{StaticResource Headline}" FontSize="32"
+                   SemanticProperties.HeadingLevel="Level1" />
+        </Grid>
 
-        <Border Stroke="{AppThemeBinding Light=#D0D0D0, Dark=#3D3D3D}"
-                StrokeThickness="1"
-                StrokeShape="RoundRectangle 8"
-                Padding="4,0,4,0">
-            <Editor Text="{Binding Prompt}"
-                    Placeholder="Escribe tu consulta aqui... (maximo 500 caracteres)"
-                    MaxLength="{Binding MaxLongitudPrompt}"
-                    AutoSize="TextChanges"
-                    IsEnabled="{Binding PuedeConsultar}"
-                    FontSize="14" />
-        </Border>
-
-        <Label Text="{Binding ContadorCaracteres}"
-               FontSize="12"
-               HorizontalOptions="End"
-               TextColor="{AppThemeBinding Light=#777777, Dark=#AAAAAA}" />
+        <VerticalStackLayout Spacing="6">
+            <Border Style="{StaticResource RisoField}" Padding="6,2">
+                <Editor Text="{Binding Prompt}"
+                        Placeholder="Escribe tu consulta aqui... (maximo 500 caracteres)"
+                        MaxLength="{Binding MaxLongitudPrompt}"
+                        AutoSize="TextChanges"
+                        IsEnabled="{Binding PuedeConsultar}"
+                        FontSize="15" />
+            </Border>
+            <Label Text="{Binding ContadorCaracteres}"
+                   Style="{StaticResource RisoMeta}"
+                   HorizontalOptions="End" />
+        </VerticalStackLayout>
 
         <Button Text="Consultar"
                 Command="{Binding ConsultarCommand}"
@@ -38,31 +37,23 @@
 
         <Label Text="{Binding MensajeError}"
                IsVisible="{Binding TieneError}"
-               TextColor="#C62828"
-               FontSize="14"
-               LineBreakMode="WordWrap" />
+               Style="{StaticResource RisoError}" />
 
         <Label Text="La respuesta de la IA aparecera aqui."
                IsVisible="{Binding MuestraAvisoSinRespuesta}"
-               FontSize="14"
-               TextColor="{AppThemeBinding Light=#999999, Dark=#777777}"
-               HorizontalTextAlignment="Center" />
+               Style="{StaticResource RisoMeta}"
+               HorizontalTextAlignment="Center"
+               Margin="0,12,0,0" />
 
         <Border IsVisible="{Binding TieneRespuesta}"
-                Stroke="{AppThemeBinding Light=#D0D0D0, Dark=#3D3D3D}"
-                StrokeThickness="1"
-                StrokeShape="RoundRectangle 8"
-                Padding="12"
-                BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#222222}">
+                Style="{StaticResource RisoCard}"
+                Margin="0,4,6,6">
 
             <ScrollView>
-                <VerticalStackLayout Spacing="8">
-                    <Label Text="Respuesta de la IA"
-                           FontSize="16"
-                           FontAttributes="Bold" />
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="Respuesta de la IA" Style="{StaticResource RisoLabel}" />
                     <Label Text="{Binding Respuesta}"
-                           FontSize="14"
-                           LineBreakMode="WordWrap"
+                           Style="{StaticResource RisoBody}"
                            HorizontalOptions="Fill" />
                 </VerticalStackLayout>
             </ScrollView>

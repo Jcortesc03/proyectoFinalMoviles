@@ -1,55 +1,141 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Hallmark · redesign · theme: Riso (off-register) · genre: editorial · tokens: Colors.xaml -->
 <ResourceDictionary 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
 
     <Style TargetType="ActivityIndicator">
-        <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
+        <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource RisoBlue}, Dark={StaticResource RisoBlueDark}}" />
     </Style>
 
     <Style TargetType="IndicatorView">
-        <Setter Property="IndicatorColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}"/>
-        <Setter Property="SelectedIndicatorColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray100}}"/>
+        <Setter Property="IndicatorColor" Value="{AppThemeBinding Light={StaticResource RisoInk2}, Dark={StaticResource RisoInk2Dark}}"/>
+        <Setter Property="SelectedIndicatorColor" Value="{AppThemeBinding Light={StaticResource RisoPink}, Dark={StaticResource RisoPinkDark}}"/>
     </Style>
 
+    <!-- ===== Off-register plates: hard-offset shadows, no blur ===== -->
+    <Shadow x:Key="PlateBlue"
+            Brush="{AppThemeBinding Light={StaticResource RisoBlueBrush}, Dark={StaticResource RisoBlueDarkBrush}}"
+            Offset="6,6" Radius="1" Opacity="1" />
+
     <Style TargetType="Border">
-        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
+        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
         <Setter Property="StrokeShape" Value="Rectangle"/>
-        <Setter Property="StrokeThickness" Value="1"/>
+        <Setter Property="StrokeThickness" Value="2"/>
+    </Style>
+
+    <!-- Printed card: second ink plate slipped down-right -->
+    <Style TargetType="Border" x:Key="RisoCard">
+        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
+        <Setter Property="StrokeShape" Value="Rectangle"/>
+        <Setter Property="StrokeThickness" Value="2"/>
+        <Setter Property="Padding" Value="16"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource RisoPaper2}, Dark={StaticResource RisoPaper2Dark}}" />
+        <Setter Property="Shadow" Value="{StaticResource PlateBlue}" />
+    </Style>
+
+    <!-- Flat field: ink outline, no plate -->
+    <Style TargetType="Border" x:Key="RisoField">
+        <Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
+        <Setter Property="StrokeShape" Value="Rectangle"/>
+        <Setter Property="StrokeThickness" Value="2"/>
+        <Setter Property="Padding" Value="12"/>
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource RisoPaper}, Dark={StaticResource RisoPaperDark}}" />
     </Style>
 
     <Style TargetType="BoxView">
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
     </Style>
 
-    <Style TargetType="Button">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource PrimaryDarkText}}" />
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
-        <Setter Property="FontFamily" Value="OpenSansRegular"/>
-        <Setter Property="FontSize" Value="14"/>
+    <!-- Rule printed twice: ink line + rose plate slipped off-register -->
+    <Style TargetType="BoxView" x:Key="RisoRule">
+        <Setter Property="HeightRequest" Value="2"/>
+        <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
+    </Style>
+    <Style TargetType="BoxView" x:Key="RisoRuleGhost">
+        <Setter Property="HeightRequest" Value="2"/>
+        <Setter Property="TranslationX" Value="6"/>
+        <Setter Property="TranslationY" Value="3"/>
+        <Setter Property="InputTransparent" Value="True"/>
+        <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource RisoGhost}, Dark={StaticResource RisoGhostDark}}" />
+    </Style>
+
+    <!-- Soft lift for buttons: diffuse, low-opacity ink instead of a hard plate -->
+    <Shadow x:Key="ButtonShadow"
+            Brush="{AppThemeBinding Light={StaticResource RisoInkBrush}, Dark={StaticResource SoftShadowDarkBrush}}"
+            Offset="0,3" Radius="10" Opacity="0.16" />
+    <Shadow x:Key="ButtonShadowPressed"
+            Brush="{AppThemeBinding Light={StaticResource RisoInkBrush}, Dark={StaticResource SoftShadowDarkBrush}}"
+            Offset="0,1" Radius="4" Opacity="0.12" />
+
+    <!-- Primary: ink on paper, the same ink the headlines are printed in -->
+    <Style TargetType="Button" x:Key="RisoButton">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoPaper}, Dark={StaticResource RisoPaperDark}}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
+        <Setter Property="BorderColor" Value="Transparent" />
+        <Setter Property="FontFamily" Value="OpenSansSemibold"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="LineBreakMode" Value="NoWrap"/>
         <Setter Property="BorderWidth" Value="0"/>
-        <Setter Property="CornerRadius" Value="8"/>
-        <Setter Property="Padding" Value="14,10"/>
-        <Setter Property="MinimumHeightRequest" Value="44"/>
-        <Setter Property="MinimumWidthRequest" Value="44"/>
+        <Setter Property="CornerRadius" Value="14"/>
+        <Setter Property="Padding" Value="20,12"/>
+        <Setter Property="MinimumHeightRequest" Value="46"/>
+        <Setter Property="MinimumWidthRequest" Value="46"/>
+        <Setter Property="Shadow" Value="{StaticResource ButtonShadow}" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">
                     <VisualState x:Name="Normal" />
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
-                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoInk2}, Dark={StaticResource RisoInk2Dark}}" />
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource RisoPaper2}, Dark={StaticResource RisoPaper2Dark}}" />
+                            <Setter Property="Opacity" Value="0.7" />
                         </VisualState.Setters>
                     </VisualState>
-                    <VisualState x:Name="PointerOver" />
+                    <VisualState x:Name="PointerOver">
+                        <VisualState.Setters>
+                            <Setter Property="TranslationY" Value="-1" />
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="TranslationY" Value="1" />
+                            <Setter Property="Scale" Value="0.98" />
+                            <Setter Property="Shadow" Value="{StaticResource ButtonShadowPressed}" />
+                        </VisualState.Setters>
+                    </VisualState>
                 </VisualStateGroup>
             </VisualStateGroupList>
         </Setter>
     </Style>
 
+    <Style TargetType="Button" BasedOn="{StaticResource RisoButton}" />
+
+    <!-- Soft pink: export / secondary action, the pink plate at low density -->
+    <Style TargetType="Button" x:Key="RisoButtonYellow" BasedOn="{StaticResource RisoButton}">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource RisoPinkSoft}, Dark={StaticResource RisoPinkSoftDark}}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoPinkText}, Dark={StaticResource RisoPinkTextDark}}" />
+    </Style>
+
+    <!-- Paper: quiet navigation, ink on stock with a soft edge -->
+    <Style TargetType="Button" x:Key="RisoButtonPaper" BasedOn="{StaticResource RisoButton}">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource RisoPaper2}, Dark={StaticResource RisoPaper2Dark}}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
+        <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource RisoEdge}, Dark={StaticResource RisoEdgeDark}}" />
+        <Setter Property="BorderWidth" Value="1" />
+    </Style>
+
+    <!-- Destructive: red ink on paper, not a red flood -->
+    <Style TargetType="Button" x:Key="RisoButtonDanger" BasedOn="{StaticResource RisoButton}">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource RisoPaper}, Dark={StaticResource RisoPaperDark}}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoRed}, Dark={StaticResource RisoRedDark}}" />
+        <Setter Property="BorderColor" Value="{AppThemeBinding Light={StaticResource RisoRed}, Dark={StaticResource RisoRedDark}}" />
+        <Setter Property="BorderWidth" Value="1.5" />
+    </Style>
+
     <Style TargetType="CheckBox">
-        <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
+        <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource RisoBlue}, Dark={StaticResource RisoBlueDark}}" />
         <Setter Property="MinimumHeightRequest" Value="44"/>
         <Setter Property="MinimumWidthRequest" Value="44"/>
         <Setter Property="VisualStateManager.VisualStateGroups">
@@ -58,7 +144,7 @@
                     <VisualState x:Name="Normal" />
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                            <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource RisoInk2}}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -67,7 +153,7 @@
     </Style>
 
     <Style TargetType="DatePicker">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14"/>
@@ -79,7 +165,7 @@
                     <VisualState x:Name="Normal" />
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoInk2}, Dark={StaticResource RisoInk2Dark}}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -88,11 +174,11 @@
     </Style>
 
     <Style TargetType="Editor">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource RisoInk2}, Dark={StaticResource RisoInk2Dark}}" />
         <Setter Property="MinimumHeightRequest" Value="44"/>
         <Setter Property="MinimumWidthRequest" Value="44"/>
         <Setter Property="VisualStateManager.VisualStateGroups">
@@ -101,7 +187,7 @@
                     <VisualState x:Name="Normal" />
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource RisoInk2}}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -110,11 +196,11 @@
     </Style>
 
     <Style TargetType="Entry">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14" />
-        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray500}}" />
+        <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource RisoInk2}, Dark={StaticResource RisoInk2Dark}}" />
         <Setter Property="MinimumHeightRequest" Value="44"/>
         <Setter Property="MinimumWidthRequest" Value="44"/>
         <Setter Property="VisualStateManager.VisualStateGroups">
@@ -123,7 +209,7 @@
                     <VisualState x:Name="Normal" />
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource RisoInk2}}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -154,7 +240,7 @@
     </Style>
 
     <Style TargetType="Label">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize" Value="14" />
@@ -164,7 +250,7 @@
                     <VisualState x:Name="Normal" />
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource RisoInk2}}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -172,23 +258,93 @@
         </Setter>
     </Style>
 
+    <!-- Display: heavy lowercase, roman, printed in ink -->
     <Style TargetType="Label" x:Key="Headline">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource MidnightBlue}, Dark={StaticResource White}}" />
-        <Setter Property="FontSize" Value="32" />
-        <Setter Property="HorizontalOptions" Value="Center" />
-        <Setter Property="HorizontalTextAlignment" Value="Center" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
+        <Setter Property="FontFamily" Value="RisoDisplay" />
+        <Setter Property="FontSize" Value="36" />
+        <Setter Property="LineHeight" Value="0.95" />
+        <Setter Property="TextTransform" Value="Lowercase" />
+        <Setter Property="LineBreakMode" Value="WordWrap" />
+        <Setter Property="HorizontalOptions" Value="Start" />
+        <Setter Property="HorizontalTextAlignment" Value="Start" />
+    </Style>
+
+    <!-- The rose plate of the same headline, slipped off-register. Decorative only. -->
+    <Style TargetType="Label" x:Key="HeadlineGhost" BasedOn="{StaticResource Headline}">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoGhost}, Dark={StaticResource RisoGhostDark}}" />
+        <Setter Property="TranslationX" Value="3" />
+        <Setter Property="TranslationY" Value="3" />
+        <Setter Property="InputTransparent" Value="True" />
+        <Setter Property="AutomationProperties.IsInAccessibleTree" Value="False" />
     </Style>
 
     <Style TargetType="Label" x:Key="SubHeadline">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource MidnightBlue}, Dark={StaticResource White}}" />
-        <Setter Property="FontSize" Value="24" />
-        <Setter Property="HorizontalOptions" Value="Center" />
-        <Setter Property="HorizontalTextAlignment" Value="Center" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
+        <Setter Property="FontFamily" Value="RisoDisplay" />
+        <Setter Property="FontSize" Value="22" />
+        <Setter Property="TextTransform" Value="Lowercase" />
+        <Setter Property="LineBreakMode" Value="WordWrap" />
+        <Setter Property="HorizontalOptions" Value="Start" />
+        <Setter Property="HorizontalTextAlignment" Value="Start" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="SubHeadlineGhost" BasedOn="{StaticResource SubHeadline}">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoBlue}, Dark={StaticResource RisoBlueDark}}" />
+        <Setter Property="TranslationX" Value="2" />
+        <Setter Property="TranslationY" Value="2" />
+        <Setter Property="InputTransparent" Value="True" />
+        <Setter Property="AutomationProperties.IsInAccessibleTree" Value="False" />
+    </Style>
+
+    <!-- Field label: mono caps, muted ink -->
+    <Style TargetType="Label" x:Key="RisoLabel">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoInk2}, Dark={StaticResource RisoInk2Dark}}" />
+        <Setter Property="FontFamily" Value="RisoMonoBold" />
+        <Setter Property="FontSize" Value="11" />
+        <Setter Property="CharacterSpacing" Value="1.5" />
+        <Setter Property="TextTransform" Value="Uppercase" />
+    </Style>
+
+    <!-- Metadata: dates, counters, versions -->
+    <Style TargetType="Label" x:Key="RisoMeta">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoInk2}, Dark={StaticResource RisoInk2Dark}}" />
+        <Setter Property="FontFamily" Value="RisoMono" />
+        <Setter Property="FontSize" Value="12" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="RisoBody">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
+        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="LineHeight" Value="1.35" />
+        <Setter Property="LineBreakMode" Value="WordWrap" />
+    </Style>
+
+    <Style TargetType="Label" x:Key="RisoError" BasedOn="{StaticResource RisoBody}">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoRed}, Dark={StaticResource RisoRedDark}}" />
+        <Setter Property="FontFamily" Value="OpenSansSemibold" />
+    </Style>
+
+    <!-- Estado de consulta: color por valor -->
+    <Style TargetType="Label" x:Key="RisoEstado">
+        <Setter Property="FontFamily" Value="RisoMonoBold" />
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="TextTransform" Value="Lowercase" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoInk2}, Dark={StaticResource RisoInk2Dark}}" />
+        <Style.Triggers>
+            <DataTrigger TargetType="Label" Binding="{Binding Estado}" Value="Respondido con exito">
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoGreen}, Dark={StaticResource RisoGreenDark}}" />
+            </DataTrigger>
+            <DataTrigger TargetType="Label" Binding="{Binding Estado}" Value="Sin respuesta">
+                <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoRed}, Dark={StaticResource RisoRedDark}}" />
+            </DataTrigger>
+        </Style.Triggers>
     </Style>
 
     <Style TargetType="Picker">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
-        <Setter Property="TitleColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray200}}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
+        <Setter Property="TitleColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14" />
@@ -200,8 +356,8 @@
                     <VisualState x:Name="Normal" />
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
-                            <Setter Property="TitleColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource RisoInk2}}" />
+                            <Setter Property="TitleColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource RisoInk2}}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -210,14 +366,14 @@
     </Style>
 
     <Style TargetType="ProgressBar">
-        <Setter Property="ProgressColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
+        <Setter Property="ProgressColor" Value="{AppThemeBinding Light={StaticResource RisoBlue}, Dark={StaticResource RisoBlueDark}}" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">
                     <VisualState x:Name="Normal" />
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="ProgressColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                            <Setter Property="ProgressColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource RisoInk2}}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -227,7 +383,7 @@
 
     <Style TargetType="RadioButton">
         <Setter Property="BackgroundColor" Value="Transparent"/>
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="MinimumHeightRequest" Value="44"/>
@@ -238,7 +394,7 @@
                     <VisualState x:Name="Normal" />
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource RisoInk2}}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -247,13 +403,13 @@
     </Style>
 
     <Style TargetType="RefreshView">
-        <Setter Property="RefreshColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray200}}" />
+        <Setter Property="RefreshColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
     </Style>
 
     <Style TargetType="SearchBar">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
-        <Setter Property="PlaceholderColor" Value="{StaticResource Gray500}" />
-        <Setter Property="CancelButtonColor" Value="{StaticResource Gray500}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource RisoInk2}" />
+        <Setter Property="CancelButtonColor" Value="{StaticResource RisoInk2}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize" Value="14" />
@@ -265,8 +421,8 @@
                     <VisualState x:Name="Normal" />
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
-                            <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource RisoInk2}}" />
+                            <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource RisoInk2}}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -275,8 +431,8 @@
     </Style>
 
     <Style TargetType="SearchHandler">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
-        <Setter Property="PlaceholderColor" Value="{StaticResource Gray500}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
+        <Setter Property="PlaceholderColor" Value="{StaticResource RisoInk2}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize" Value="14" />
@@ -286,8 +442,8 @@
                     <VisualState x:Name="Normal" />
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
-                            <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource RisoInk2}}" />
+                            <Setter Property="PlaceholderColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource RisoInk2}}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -296,25 +452,25 @@
     </Style>
 
     <Style TargetType="Shadow">
-        <Setter Property="Radius" Value="15" />
-        <Setter Property="Opacity" Value="0.5" />
-        <Setter Property="Brush" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource White}}" />
-        <Setter Property="Offset" Value="10,10" />
+        <Setter Property="Radius" Value="10" />
+        <Setter Property="Opacity" Value="0.16" />
+        <Setter Property="Brush" Value="{AppThemeBinding Light={StaticResource RisoInkBrush}, Dark={StaticResource SoftShadowDarkBrush}}" />
+        <Setter Property="Offset" Value="0,3" />
     </Style>
 
     <Style TargetType="Slider">
-        <Setter Property="MinimumTrackColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
-        <Setter Property="MaximumTrackColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
-        <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
+        <Setter Property="MinimumTrackColor" Value="{AppThemeBinding Light={StaticResource RisoBlue}, Dark={StaticResource RisoBlueDark}}" />
+        <Setter Property="MaximumTrackColor" Value="{AppThemeBinding Light={StaticResource RisoPaper2}, Dark={StaticResource RisoPaper2Dark}}" />
+        <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource RisoBlue}, Dark={StaticResource RisoBlueDark}}" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
                 <VisualStateGroup x:Name="CommonStates">
                     <VisualState x:Name="Normal" />
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="MinimumTrackColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"/>
-                            <Setter Property="MaximumTrackColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"/>
-                            <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}"/>
+                            <Setter Property="MinimumTrackColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource RisoInk2}}"/>
+                            <Setter Property="MaximumTrackColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource RisoInk2}}"/>
+                            <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource RisoInk2}}"/>
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -323,11 +479,11 @@
     </Style>
 
     <Style TargetType="SwipeItem">
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource RisoPaper}, Dark={StaticResource RisoPaperDark}}" />
     </Style>
 
     <Style TargetType="Switch">
-        <Setter Property="OnColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
+        <Setter Property="OnColor" Value="{AppThemeBinding Light={StaticResource RisoBlue}, Dark={StaticResource RisoBlueDark}}" />
         <Setter Property="ThumbColor" Value="{StaticResource White}" />
         <Setter Property="VisualStateManager.VisualStateGroups">
             <VisualStateGroupList>
@@ -335,19 +491,19 @@
                     <VisualState x:Name="Normal" />
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="OnColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
-                            <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                            <Setter Property="OnColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource RisoInk2}}" />
+                            <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource RisoInk2}}" />
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="On">
                         <VisualState.Setters>
-                            <Setter Property="OnColor" Value="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Gray200}}" />
-                            <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource White}}" />
+                            <Setter Property="OnColor" Value="{AppThemeBinding Light={StaticResource RisoPink}, Dark={StaticResource RisoPinkDark}}" />
+                            <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource RisoBlue}, Dark={StaticResource RisoBlueDark}}" />
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="Off">
                         <VisualState.Setters>
-                            <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray500}}" />
+                            <Setter Property="ThumbColor" Value="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource RisoInk2}}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -356,7 +512,7 @@
     </Style>
 
     <Style TargetType="TimePicker">
-        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}" />
+        <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
         <Setter Property="BackgroundColor" Value="Transparent"/>
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14"/>
@@ -368,7 +524,7 @@
                     <VisualState x:Name="Normal" />
                     <VisualState x:Name="Disabled">
                         <VisualState.Setters>
-                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource Gray600}}" />
+                            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Gray300}, Dark={StaticResource RisoInk2}}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -385,13 +541,13 @@
                     <VisualState x:Name="TitleBarTitleActive">
                         <VisualState.Setters>
                             <Setter Property="BackgroundColor" Value="Transparent" />
-                            <Setter Property="ForegroundColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                            <Setter Property="ForegroundColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
                         </VisualState.Setters>
                     </VisualState>
                     <VisualState x:Name="TitleBarTitleInactive">
                         <VisualState.Setters>
-                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
-                            <Setter Property="ForegroundColor" Value="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray500}}" />
+                            <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource RisoPaper}, Dark={StaticResource RisoPaperDark}}" />
+                            <Setter Property="ForegroundColor" Value="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource RisoInk2}}" />
                         </VisualState.Setters>
                     </VisualState>
                 </VisualStateGroup>
@@ -400,35 +556,52 @@
     </Style>
     -->
 
+    <!-- Paper stock: static fibre texture behind every page. Pre-rendered, decoded once,
+         mean colour equals RisoPaper / RisoPaperDark so the base tone is unchanged. -->
+    <ControlTemplate x:Key="PaperPage">
+        <Grid>
+            <Image Source="{AppThemeBinding Light=paper_fibers_light.png, Dark=paper_fibers_dark.png}"
+                   Aspect="AspectFill"
+                   InputTransparent="True"
+                   AutomationProperties.IsInAccessibleTree="False" />
+            <ContentPresenter />
+        </Grid>
+    </ControlTemplate>
+
+    <Style TargetType="ContentPage" ApplyToDerivedTypes="True">
+        <Setter Property="ControlTemplate" Value="{StaticResource PaperPage}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource RisoPaper}, Dark={StaticResource RisoPaperDark}}" />
+    </Style>
+
     <Style TargetType="Page" ApplyToDerivedTypes="True">
         <Setter Property="Padding" Value="0"/>
-        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}" />
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource RisoPaper}, Dark={StaticResource RisoPaperDark}}" />
     </Style>
 
     <Style TargetType="Shell" ApplyToDerivedTypes="True">
-        <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}" />
-        <Setter Property="Shell.ForegroundColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource SecondaryDarkText}}" />
-        <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource SecondaryDarkText}}" />
-        <Setter Property="Shell.DisabledColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray950}}" />
-        <Setter Property="Shell.UnselectedColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray200}}" />
+        <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Light={StaticResource RisoPaper}, Dark={StaticResource RisoPaperDark}}" />
+        <Setter Property="Shell.ForegroundColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
+        <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
+        <Setter Property="Shell.DisabledColor" Value="{AppThemeBinding Light={StaticResource RisoInk2}, Dark={StaticResource RisoInk2Dark}}" />
+        <Setter Property="Shell.UnselectedColor" Value="{AppThemeBinding Light={StaticResource RisoInk2}, Dark={StaticResource RisoInk2Dark}}" />
         <Setter Property="Shell.NavBarHasShadow" Value="False" />
-        <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
-        <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource White}}" />
-        <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource White}}" />
-        <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource Gray200}}" />
+        <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Light={StaticResource RisoPaper2}, Dark={StaticResource RisoPaper2Dark}}" />
+        <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Light={StaticResource RisoPinkText}, Dark={StaticResource RisoPinkTextDark}}" />
+        <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Light={StaticResource RisoPinkText}, Dark={StaticResource RisoPinkTextDark}}" />
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Light={StaticResource RisoInk2}, Dark={StaticResource RisoInk2Dark}}" />
     </Style>
 
     <Style TargetType="NavigationPage">
-        <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}" />
-        <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource White}}" />
-        <Setter Property="IconColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource White}}" />
+        <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Light={StaticResource RisoPaper}, Dark={StaticResource RisoPaperDark}}" />
+        <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
+        <Setter Property="IconColor" Value="{AppThemeBinding Light={StaticResource RisoInk}, Dark={StaticResource RisoInkDark}}" />
     </Style>
 
     <Style TargetType="TabbedPage">
-        <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray950}}" />
-        <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource Magenta}, Dark={StaticResource White}}" />
-        <Setter Property="UnselectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray950}}" />
-        <Setter Property="SelectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
+        <Setter Property="BarBackgroundColor" Value="{AppThemeBinding Light={StaticResource RisoPaper2}, Dark={StaticResource RisoPaper2Dark}}" />
+        <Setter Property="BarTextColor" Value="{AppThemeBinding Light={StaticResource RisoPinkText}, Dark={StaticResource RisoPinkTextDark}}" />
+        <Setter Property="UnselectedTabColor" Value="{AppThemeBinding Light={StaticResource RisoInk2}, Dark={StaticResource RisoInk2Dark}}" />
+        <Setter Property="SelectedTabColor" Value="{AppThemeBinding Light={StaticResource RisoPinkText}, Dark={StaticResource RisoPinkTextDark}}" />
     </Style>
 
 </ResourceDictionary>

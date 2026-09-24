@@ -4,111 +4,78 @@
              x:Class="MauiApp1.Views.DetallePage"
              Title="Detalle de consulta">
 
-    <Grid RowDefinitions="Auto,*" Padding="24" RowSpacing="14">
+    <Grid RowDefinitions="Auto,*" Padding="24,24,24,0" RowSpacing="20">
 
         <Button Text="Volver al historial"
                 Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.VolverCommand}"
                 IsVisible="{Binding TieneDatos}"
-                BackgroundColor="{AppThemeBinding Light=#1565C0, Dark=#0D47A1}"
-                TextColor="White" />
+                Style="{StaticResource RisoButtonPaper}"
+                HorizontalOptions="Start" />
 
         <ScrollView Grid.Row="1">
 
-            <VerticalStackLayout Spacing="16">
+            <VerticalStackLayout Spacing="16" Padding="0,0,6,32">
 
-                <VerticalStackLayout Spacing="10"
+                <VerticalStackLayout Spacing="14"
                                      IsVisible="{Binding TieneDatos}">
 
                     <!-- Fecha y estado -->
-                    <HorizontalStackLayout Spacing="16">
-                        <VerticalStackLayout Spacing="2">
-                            <Label Text="Fecha" FontSize="12" FontAttributes="Bold" />
-                            <Label Text="{Binding Fecha}" FontSize="14" />
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="24">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Fecha" Style="{StaticResource RisoLabel}" />
+                            <Label Text="{Binding Fecha}" Style="{StaticResource RisoMeta}" FontSize="14" />
                         </VerticalStackLayout>
-                        <VerticalStackLayout Spacing="2">
-                            <Label Text="Estado" FontSize="12" FontAttributes="Bold" />
-                            <Label Text="{Binding Estado}" FontSize="14"
-                                   FontAttributes="Bold">
-                                <Label.Triggers>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Estado}"
-                                                 Value="Respondido con exito">
-                                        <Setter Property="TextColor" Value="#2E7D32" />
-                                    </DataTrigger>
-                                    <DataTrigger TargetType="Label"
-                                                 Binding="{Binding Estado}"
-                                                 Value="Sin respuesta">
-                                        <Setter Property="TextColor" Value="#C62828" />
-                                    </DataTrigger>
-                                </Label.Triggers>
-                            </Label>
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Text="Estado" Style="{StaticResource RisoLabel}" />
+                            <Label Text="{Binding Estado}" Style="{StaticResource RisoEstado}" FontSize="14" />
                         </VerticalStackLayout>
-                    </HorizontalStackLayout>
+                    </Grid>
 
-                    <!-- Consulta -->
-                    <Label Text="Consulta"
-                           FontSize="13"
-                           FontAttributes="Bold"
-                           TextColor="{AppThemeBinding Light=#555555, Dark=#BBBBBB}" />
-                    <Border Stroke="{AppThemeBinding Light=#D0D0D0, Dark=#3D3D3D}"
-                            StrokeThickness="1"
-                            StrokeShape="RoundRectangle 8"
-                            Padding="12"
-                            BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#222222}">
-                        <Label Text="{Binding Consulta}"
-                               FontSize="14"
-                               LineBreakMode="WordWrap" />
-                    </Border>
+                    <Grid Margin="0,4,0,4">
+                        <BoxView Style="{StaticResource RisoRuleGhost}" />
+                        <BoxView Style="{StaticResource RisoRule}" />
+                    </Grid>
+
+                    <!-- Consulta: el texto del usuario, impreso grande -->
+                    <Label Text="Consulta" Style="{StaticResource RisoLabel}" />
+                    <Label Text="{Binding Consulta}"
+                           Style="{StaticResource SubHeadline}"
+                           TextTransform="None"
+                           FontSize="20" />
 
                     <!-- Prompt enviado -->
-                    <Label Text="Prompt enviado a la IA"
-                           FontSize="13"
-                           FontAttributes="Bold"
-                           TextColor="{AppThemeBinding Light=#555555, Dark=#BBBBBB}" />
-                    <Border Stroke="{AppThemeBinding Light=#D0D0D0, Dark=#3D3D3D}"
-                            StrokeThickness="1"
-                            StrokeShape="RoundRectangle 8"
-                            Padding="12"
-                            BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#222222}">
+                    <Label Text="Prompt enviado a la IA" Style="{StaticResource RisoLabel}" Margin="0,8,0,0" />
+                    <Border Style="{StaticResource RisoField}">
                         <Label Text="{Binding PromptEnviado, TargetNullValue=(No disponible)}"
-                               FontSize="14"
+                               Style="{StaticResource RisoMeta}"
+                               FontSize="13"
                                LineBreakMode="WordWrap" />
                     </Border>
 
                     <!-- Respuesta -->
-                    <Label Text="Respuesta de la IA"
-                           FontSize="13"
-                           FontAttributes="Bold"
-                           TextColor="{AppThemeBinding Light=#555555, Dark=#BBBBBB}" />
-                    <Border Stroke="{AppThemeBinding Light=#D0D0D0, Dark=#3D3D3D}"
-                            StrokeThickness="1"
-                            StrokeShape="RoundRectangle 8"
-                            Padding="12"
-                            BackgroundColor="{AppThemeBinding Light=#FAFAFA, Dark=#222222}">
+                    <Label Text="Respuesta de la IA" Style="{StaticResource RisoLabel}" Margin="0,8,0,0" />
+                    <Border Style="{StaticResource RisoCard}">
                         <Label Text="{Binding Respuesta, TargetNullValue=(Sin respuesta)}"
-                               FontSize="14"
-                               LineBreakMode="WordWrap" />
+                               Style="{StaticResource RisoBody}" />
                     </Border>
 
                     <!-- Error (si existio) -->
                     <Label Text="{Binding Error}"
                            IsVisible="{Binding TieneError}"
-                           TextColor="#C62828"
-                           FontSize="14"
-                           LineBreakMode="WordWrap" />
+                           Style="{StaticResource RisoError}"
+                           Margin="0,8,0,0" />
                 </VerticalStackLayout>
 
                 <VerticalStackLayout Spacing="12"
                                      IsVisible="{Binding NoTieneDatos}"
-                                     VerticalOptions="Center">
-                    <Label Text="No hay una consulta seleccionada."
-                           HorizontalTextAlignment="Center"
-                           FontSize="16"
-                           FontAttributes="Bold" />
+                                     Padding="0,48,0,0">
+                    <Grid>
+                        <Label Text="No hay una consulta seleccionada." Style="{StaticResource SubHeadlineGhost}" FontSize="24" />
+                        <Label Text="No hay una consulta seleccionada." Style="{StaticResource SubHeadline}" FontSize="24" />
+                    </Grid>
                     <Label Text="Accede a una consulta desde el historial para ver su detalle."
-                           HorizontalTextAlignment="Center"
-                           FontSize="13"
-                           TextColor="{AppThemeBinding Light=#777777, Dark=#AAAAAA}" />
+                           Style="{StaticResource RisoBody}"
+                           TextColor="{AppThemeBinding Light={StaticResource RisoInk2}, Dark={StaticResource RisoInk2Dark}}" />
                 </VerticalStackLayout>
 
             </VerticalStackLayout>

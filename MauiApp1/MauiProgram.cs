@@ -17,6 +17,9 @@ namespace MauiApp1
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("ArchivoBlack-Regular.ttf", "RisoDisplay");
+                    fonts.AddFont("SpaceMono-Regular.ttf", "RisoMono");
+                    fonts.AddFont("SpaceMono-Bold.ttf", "RisoMonoBold");
                 });
 
             // Configuracion y acceso a datos (SQLite)
